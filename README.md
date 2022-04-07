@@ -12,3 +12,5 @@ Backend for a Cataloging application
 | `POST`              | `/category/{category-id}/`     | Creates a new item in a specified category. If the item exists, it will update it.      |
 | `PUT`           | `/category/{category-id}`     | Update a category |
 | `PUT`           | `/category/{category-id}/{item-id}`     | Update an item in a specified category |
+| `DELETE`           | `/category/{category-id}`     | Delete an existing category |
+| `DELETE`           | `/category/{category-id}/{item-id}`     | Delete an item in a specified category |
