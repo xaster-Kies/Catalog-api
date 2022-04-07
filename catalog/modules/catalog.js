@@ -51,6 +51,27 @@ db.once('open', function() {
   })
 })
 
+Catalog.Item.findOne({itemId: 1}, (error, data) => {
+  if (error) {
+    console.log(error)
+    return
+  } else {
+    if (!data) {
+      console.log('not found')
+      return
+    } else {
+      data.remove(function(error) {
+        if (!error) {
+          data.remove()
+          
+        } else {
+          console.log(error)
+        }
+      })
+    }
+  }
+})
+
 function readCatalogSync() {
   var file = '../data/catalog.json'
   if(fs.existsSync(file)) {
