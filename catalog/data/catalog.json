@@ -1,0 +1,13 @@
+{
+  "categoryName": "Watches",
+  "categoryId": "1",
+  "itemsCount": 100,
+  "items": [
+    {
+      "itemId": "item-identifier-1",
+      "itemName": "Sports Watch",
+      "price": 150,
+      "currency": "EUR"
+    }
+  ]
+}
