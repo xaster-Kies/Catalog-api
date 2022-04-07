@@ -1,7 +1,19 @@
 var fs = require('fs')
+var mongoose = require('mongoose')
+var Schema = mongoose.Schema;
+
+var itemSchema = new Schema ({
+  "itemId" : { type: String, index: { unique: true }},
+  "itemName" : String,
+  "price" : Number,
+  "currency" : String,
+  "categories" : [String]
+})
+
+var CatalogItem = mongoose.model('Item', itemSchema)
 
 function readCatalogSync() {
-  var file = './data/catalog.json'
+  var file = '../data/catalog.json'
   if(fs.existsSync(file)) {
     var content = fs.readFileSync(file);
     var catalog = JSON.parse(content)
