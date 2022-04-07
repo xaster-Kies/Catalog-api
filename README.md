@@ -3,7 +3,7 @@ Backend for a Cataloging application
 
 ## REST Endpoints
 
-| method             | resource         | description                                                                                    |
+| Method             | Resource         | Description                                                                                    |
 |:-------------------|:-----------------|:-----------------------------------------------------------------------------------------------|
 | `GET`              | `/category`              | Retrieves all available categories in the catalog                                                                     |
 | `GET`              | `/category/{category-id}`         | Retrieves all the items available under specific category                                               |
