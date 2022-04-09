@@ -7,27 +7,27 @@ var router = express.Router();
 
 router.get('/', function(req, res, next) {
   var categories = catalog.findCategories();
-  response.json(categories)
+  res.json(categories)
 });
 
 router.get('/:categoryId', function(req, res, next) {
   var categories = catalog.findItems(req.params.categoryId)
   if(categories === undefined) {
-    response.writeHead(404, {'Content-Type' : 'text/plain'})
-    response.end('Not Found')
+    res.writeHead(404, {'Content-Type' : 'text/plain'})
+    res.end('Not Found')
   } else {
-    response.json(categories)
+    res.json(categories)
   }
 })
 
 router.get('/:categoryId/:itemId', function(req, res, next) {
   var item = catalog.findItem(req.params.categoryId, req.params.itemId)
   if (item === undefined) {
-    response.writeHead(404, {'Content-Type' : 'text/plain'})
-    response.end('Not found')
+    res.writeHead(404, {'Content-Type' : 'text/plain'})
+    res.end('Not found')
   } 
   else {
-    response.json(item)
+    res.json(item)
   }
 })
 

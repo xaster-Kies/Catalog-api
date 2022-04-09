@@ -1,4 +1,6 @@
 var mongoose = require('mongoose')
+var should = require('should')
+
 
 beforeEach(function (done) {
   function clearDatabase() {
