@@ -1,9 +1,7 @@
-const { response } = require('express');
 var express = require('express');
-var catalog = require('../modules/catalog.js')
-
 var router = express.Router();
 
+var catalog = require('../modules/catalog.js')
 
 router.get('/', function(req, res, next) {
   var categories = catalog.findCategories();
