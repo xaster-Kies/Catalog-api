@@ -1,6 +1,7 @@
 var fs = require('fs')
 var item = require('../model/item.js')
 
+
 var itemSchema = item.itemSchema
 
 var CatalogItem = mongoose.model('Item', itemSchema)
@@ -250,3 +251,4 @@ exports.findItemsByAttribute = function(key, value, response) {
     }
   })
 }
+

@@ -1,5 +1,8 @@
 var fs = require('fs')
 var item = require('../model/item.js')
+const mongoose = require('mongoose')
+const Grid  = require('gridfs-stream')
+const { response } = require('express')
 
 var itemSchema = item.itemSchema
 
@@ -250,3 +253,66 @@ exports.findItemsByAttribute = function(key, value, response) {
     }
   })
 }
+
+mongoose.connect('mongodb://localhost/catalog')
+var connection = mongoose.connection
+var gfs = Grid(connection.db, mongoose.mongo)
+
+exports.saveImage = function(gfs, request, response) {
+  var writeStream = gfs.createWriteStream({
+    filename: request.params.itemId,
+    mode: 'w'
+  })
+
+  writeStream.on('error', function(error) {
+    response.send('500', 'Internal Server Error')
+    console.log(error);
+    return;
+  })
+
+  writeStream.on('close', function() {
+    readImage(gfs, request, response);
+  })
+
+  request.pipe(writeStream)
+}
+
+exports.getImage = function(gfs, itemId, response) {
+  readImage(gfs, itemId, response);
+}
+
+exports.deleteImage = function(gfs, monogdb, itemId, response) {
+  console.log('Deleting Image for itemId: ' + itemId)
+
+  var options = {
+    filename : itemId
+  }
+
+  var chunks = monogdb.collection('fs.files.chunk');
+  chunks.remove(options, function (error, image) {
+    if (error) {
+      console.log(error)
+      response.send('500', 'Internal Server Error')
+      return
+    } else {
+      console.log('Successfully deleted image for item: ' + itemId);
+    }
+  })
+}
+
+var files = mongodb.collection('fs.files')
+files.remove(options, function(error, image) {
+  if(error) {
+    console.log(error)
+    response.send('500', 'Internal Server Error')
+    return
+  }
+
+  if(image === null) {
+    response.send('404', 'Not Found')
+    return;
+  } else {
+    console.log('Sucessfully deleted image for the primary item: ' + itemId)
+    response.json({'deleted': true})
+  }
+})
