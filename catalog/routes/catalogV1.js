@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-var catalog = require('../modules/catalog.js')
+var catalog = require('../modules/catalogV1.js')
 
-router.get('/', function(req, res, next) {
+router.get('/v1/', function(req, res, next) {
   var categories = catalog.findCategories();
   res.json(categories)
 });
