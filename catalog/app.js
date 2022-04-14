@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var expressPaginate = require('express-paginate')
 
 var indexRouter = require('./routes/index');
 var catalogRouter = require('./routes/catalog');
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(expressPaginate.middleware(limit, maxLimit))
 
 app.use('/', indexRouter);
 app.use('/catalog', catalogRouter);

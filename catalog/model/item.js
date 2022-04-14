@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
+const { request, response } = require('../app');
 var Schema = mongoose.Schema;
 
 var itemSchema = new Schema ({
@@ -8,8 +10,11 @@ var itemSchema = new Schema ({
   "currency" : String,
   "categories" : [String]
 })
-
+console.log('paginate')
+itemSchema.plugin(mongoosePaginate)
 var CatalogItem = mongoose.model('Item', itemSchema)
+
+module.exports = {CatalogItem : CatalogItem, connection : mongoose.connection}
 
 mongoose.connect('mongodb://localhost/catalog')
 var db = mongoose.connection;
@@ -49,4 +54,15 @@ db.once('open', function() {
     }
   })
 })
+
+CatalogItem.paginate({}, {page: request.query.page, limit: request.query.limit}, 
+  function (error, result) {
+    if(error) {
+      console.log(error);
+      response.writeHead('500', {'Content-Type' : 'text/plain'})
+      response.end('Internal Server Error')
+    } else {
+      response.json(result)
+    }
+  })
 
