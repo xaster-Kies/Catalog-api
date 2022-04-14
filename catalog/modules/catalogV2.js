@@ -2,7 +2,6 @@ var fs = require('fs')
 var item = require('../model/item.js')
 const mongoose = require('mongoose')
 const Grid  = require('gridfs-stream')
-const { response } = require('express')
 
 var itemSchema = item.itemSchema
 
