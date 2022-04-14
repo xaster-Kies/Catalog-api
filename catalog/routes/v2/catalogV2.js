@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
 const Grid  = require('gridfs-stream');
-const { cache } = require('jade/lib');
 const mongoose = require('mongoose')
+var CacheControl = require('express-cache-control')
 
 var catalog = require('../../modules/catalogV2.js')
+var cache = new CacheControl().middleware
 
 router.get('/v2/', function(req, res, next) {
   var categories = catalog.findCategories();
