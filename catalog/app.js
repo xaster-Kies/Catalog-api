@@ -4,9 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expressPaginate = require('express-paginate')
+var CacheControl = require('express-cache-control')
 
 var indexRouter = require('./routes/index');
 var catalogRouter = require('./routes/catalog');
+
 
 var app = express();
 
@@ -19,6 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressPaginate.middleware(limit, maxLimit))
+var cache = new CacheControl().middleware
 
 app.use('/', indexRouter);
 app.use('/catalog', catalogRouter);

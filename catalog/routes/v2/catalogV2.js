@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-const Grid  = require('gridfs-stream')
+const Grid  = require('gridfs-stream');
+const { cache } = require('jade/lib');
 const mongoose = require('mongoose')
 
 var catalog = require('../../modules/catalogV2.js')
@@ -72,9 +73,9 @@ router.delete('/v2/item/:itemId/image', function(request, response) {
   catalog.deleteImage(gfs, model.connection, request.params.itemId, response)
 })
 
-router.get('/v2/', function(request, response) {
+router.get('/v2/', cache('minute', 1), function(request, response) {
   var getParams = url.parse(request.url, true).query
-  if(getParams['page'] != null) {
+  if(getParams['page'] != null || getParams['limit'] != null) {
     catalog.paginate(model.CatalogItem, request, response)
   } else {
     var key = Object.keys(getParams)[0];
