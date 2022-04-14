@@ -17,6 +17,28 @@ function readCatalogSync() {
   return undefined
 }
 
+function readImage(gfs, request, response) {
+  var imageStream = gfs.createReadStream({
+    filename: request.params.itemId,
+    mode: 'r'
+  })
+
+  imageStream.on('error', function(error) {
+    console.log(error);
+    response.send('404', 'Not Found')
+    return
+  })
+
+  var itemImageUrl = request.protocol + '://' + request.get('host') + 
+  request.baseUrl + request.path
+
+  var itemUrl = itemImageUrl.substring(0, itemImageUrl.indexOf('/image'))
+  response.setHeader('Content-Type', 'image/jpeg')
+  response.setHeader('Item-Url', itemUrl)
+
+  imageStream.pipe(response)
+}
+
 exports.findItems = function(categoryId) {
   console.log('Returning all items for categoryId: ' + categoryId)
   var catalog = readCatalogSync()
@@ -192,7 +214,7 @@ exports.findItemsByCategory = function (category, response) {
 }
 
 exports.findItemById = function (itemId, response) {
-  CatalogItem.findOne({itemId: itemId}, function(error, result) {
+  CatalogItem.findOne({itemId: request.params.itemId}, function(error, result) {
     if(error) {
       console.error(error)
       response.writeHead(500, contentTypePlainText)
@@ -205,6 +227,20 @@ exports.findItemById = function (itemId, response) {
         }
         return
       }
+
+      var options = {
+        filename : result.itemId
+      }
+      gfs.exist(options, function(error, found) {
+        if(found) {
+          response.setHeader('Content-Type', 'appliction/json')
+          var imageUrl = request.protocol + '://' + request.get('host') + 
+          request.baseUrl + request.path + '/image'
+          response.send(result)
+        } else {
+          response.json(result)
+        }
+      })
 
       if (response != null ) {
         response.setHeader('Content-Type', 'application/json')
