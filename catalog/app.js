@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expressPaginate = require('express-paginate')
-var CacheControl = require('express-cache-control')
+var swaggerJSDoc =  require('./swagger.js');
 
 var indexRouter = require('./routes/index');
 var catalogRouter = require('./routes/catalog');
@@ -21,6 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressPaginate.middleware(limit, maxLimit))
+app.use('/catalog/static', express.static('static'))
 
 
 app.use('/', indexRouter);
