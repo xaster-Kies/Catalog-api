@@ -72,4 +72,15 @@ router.delete('/v2/item/:itemId/image', function(request, response) {
   catalog.deleteImage(gfs, model.connection, request.params.itemId, response)
 })
 
+router.get('/v2/', function(request, response) {
+  var getParams = url.parse(request.url, true).query
+  if(getParams['page'] != null) {
+    catalog.paginate(model.CatalogItem, request, response)
+  } else {
+    var key = Object.keys(getParams)[0];
+    var value = getParams[key]
+    catalog.findItemsByAttribute(key, value, response)
+  }
+})
+
 module.exports = router;

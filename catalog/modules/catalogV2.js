@@ -351,3 +351,25 @@ files.remove(options, function(error, image) {
     response.json({'deleted': true})
   }
 })
+
+exports.paginate = function(model, request, response) {
+  var pageSize = request.query.limit;
+  var page = request.query.page
+  if(pageSize === undefined) {
+    pageSize = 100;
+  }
+
+  if(page === undefined) {
+    page = 1;
+  }
+
+  model.paginate({}, {page: page, limit: pageSize}, function (error, result) {
+    if(error) {
+      console.log(error)
+      response.writeHead('500', {'Content-Type' : 'text/plain'})
+      response.end('Internal Server Error')
+    } else {
+      response.json(result)
+    }
+  })
+}
