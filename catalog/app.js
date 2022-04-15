@@ -4,11 +4,31 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expressPaginate = require('express-paginate')
-var swaggerJSDoc =  require('./swagger.js');
+var swaggerJSDoc =  require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
 
 var indexRouter = require('./routes/index');
-var catalogRouter = require('./routes/catalog');
+var catalogRouter = require('./routes/catalogV1');
 
+const options = {
+  defination: {
+    openapi: "3.0.0",
+    info: {
+      title: "Catalog API",
+      version: "1.0.0",
+      description: "An Express Catalog API"
+    },
+    servers: [
+      {
+        url: "http://localhost:3000"
+      }
+    ]
+  },
+  apis: ["./routes/*.js"]
+}
+
+const specs = swaggerJSDoc(options)
 
 var app = express();
 
@@ -21,7 +41,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressPaginate.middleware(limit, maxLimit))
-app.use('/catalog/static', express.static('static'))
+app.use("/api-docs", swaggerUi.serve, swaggerUI.setup(specs))
 
 
 app.use('/', indexRouter);
