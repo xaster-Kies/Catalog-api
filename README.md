@@ -1,4 +1,4 @@
-# Catalog-api
+# Catalog-API
 Backend for a Cataloging application
 
 ## REST Endpoints
