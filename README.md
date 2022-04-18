@@ -1,6 +1,8 @@
 # Catalog-API
 Backend for a Cataloging application
 
+### Tech Stack: Nodejs, express
+
 ## REST Endpoints
 
 | Method             | Resource         | Description                                                                                    |
